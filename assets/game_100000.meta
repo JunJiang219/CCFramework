@@ -8,7 +8,6 @@
   "userData": {
     "isBundle": true,
     "bundleConfigID": "default",
-    "bundleName": "resources",
-    "priority": 8
+    "bundleName": "game_100000"
   }
 }

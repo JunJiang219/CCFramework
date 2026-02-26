@@ -9,16 +9,21 @@ export class App extends Component {
                 console.error(err);
                 return;
             }
-
-            // 加载管理节点作为常驻节点
-            resources.load("prefabs/AppManager", Prefab, (err: Error, prefab: Prefab) => {
+            assetManager.loadBundle("game_100000", (err: Error, bundle: AssetManager.Bundle) => {
                 if (err) {
                     console.error(err);
                     return;
                 }
+                // 加载管理节点作为常驻节点
+                bundle.load("prefabs/AppManager", Prefab, (err: Error, prefab: Prefab) => {
+                    if (err) {
+                        console.error(err);
+                        return;
+                    }
 
-                let appManager = instantiate(prefab);
-                director.addPersistRootNode(appManager);
+                    let appManager = instantiate(prefab);
+                    director.addPersistRootNode(appManager);
+                });
             });
         });
     }
