@@ -33,39 +33,41 @@ export default class CCMResLoader {
         // 完成回调重组
         let onCompleteOut = args.onComplete;
         let finalComplete = (error: Error, assets: any | any[], urls?: string[]) => {
-            if (assets instanceof Array) {
-                if (this.resLeakChecker) {
-                    assets.forEach(element => {
-                        this.resLeakChecker.traceAsset(element);
-                    });
-                }
-
-                if (args.keeper) {
-                    // 通过 keeper 对象接口加载
-                    if (isValid(args.keeper)) {
-                        // keeper 对象有效
-                        for (let i = 0, len = assets.length; i < len; ++i) {
-                            args.keeper.cacheAsset(assets[i]);
-                        }
-                    } else {
-                        // keeper 对象失效
-                        for (let i = 0, len = assets.length; i < len; ++i) {
-                            assets[i].addRef();
-                            assets[i].decRef();     // 这里引用需要先加后减，防止意外释放外部模块的引用
+            if (!error) {
+                if (assets instanceof Array) {
+                    if (this.resLeakChecker) {
+                        assets.forEach(element => {
+                            this.resLeakChecker.traceAsset(element);
+                        });
+                    }
+    
+                    if (args.keeper) {
+                        // 通过 keeper 对象接口加载
+                        if (isValid(args.keeper)) {
+                            // keeper 对象有效
+                            for (let i = 0, len = assets.length; i < len; ++i) {
+                                args.keeper.cacheAsset(assets[i]);
+                            }
+                        } else {
+                            // keeper 对象失效
+                            for (let i = 0, len = assets.length; i < len; ++i) {
+                                assets[i].addRef();
+                                assets[i].decRef();     // 这里引用需要先加后减，防止意外释放外部模块的引用
+                            }
                         }
                     }
-                }
-            } else {
-                if (this.resLeakChecker) {
-                    this.resLeakChecker.traceAsset(assets);
-                }
-
-                if (args.keeper) {
-                    if (isValid(args.keeper)) {
-                        args.keeper.cacheAsset(assets);
-                    } else {
-                        assets.addRef();
-                        assets.decRef();
+                } else {
+                    if (this.resLeakChecker) {
+                        this.resLeakChecker.traceAsset(assets);
+                    }
+    
+                    if (args.keeper) {
+                        if (isValid(args.keeper)) {
+                            args.keeper.cacheAsset(assets);
+                        } else {
+                            assets.addRef();
+                            assets.decRef();
+                        }
                     }
                 }
             }

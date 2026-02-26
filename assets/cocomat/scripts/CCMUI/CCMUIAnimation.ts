@@ -32,6 +32,7 @@ export class CCMUIAnimation extends Component {
             defaultAniNode.active = true;
             finishCb();
         } else {
+            defaultAniNode.setScale(0, 0, 0);
             defaultAniNode.active = true;
             tween(defaultAniNode)
                 .to(0.5, { scale: new Vec3(1, 1, 1) }, { easing: "bounceOut" })
@@ -55,6 +56,7 @@ export class CCMUIAnimation extends Component {
             defaultAniNode.active = true;
             finishCb();
         } else {
+            defaultAniNode.setScale(1, 1, 1);
             defaultAniNode.active = true;
             tween(defaultAniNode)
                 .to(0.5, { scale: new Vec3(0, 0, 0) }, { easing: "elasticIn" })

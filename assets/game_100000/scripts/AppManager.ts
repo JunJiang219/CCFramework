@@ -4,6 +4,9 @@ import CCMAdapter, { CCMDeviceOrientation } from '../../cocomat/scripts/CCMAdapt
 import { CCMEventManager } from '../../cocomat/scripts/CCMEvent/CCMEventManager';
 import { CCMEvent } from '../../cocomat/scripts/CCMEvent/CCMEvent';
 import { CCMResManager } from '../../cocomat/scripts/CCMRes/CCMResManager';
+import { DEBUG } from 'cc/env';
+import { CCMUIManager } from '../../cocomat/scripts/CCMUI/CCMUIManager';
+import { UIConfig } from './UIConfig';
 const { ccclass, property } = _decorator;
 
 const EVENT_CANVAS_RESIZE = "canvas-resize";
@@ -30,6 +33,13 @@ export class AppManager extends Component {
         CCMAdapter.getInstance().deviceOrientation = CCMDeviceOrientation.AUTO;
         this.registerEvent();
         CCMAdapter.getInstance().resize();  // 第一次适配，主动调用
+
+        CCMUIManager.getInstance().initUIConf(UIConfig); // 初始化UI配置
+
+        if (DEBUG) {
+            // 测试用
+            window['uiMgr'] = CCMUIManager.getInstance();
+        }
     }
 
     private registerEvent() {

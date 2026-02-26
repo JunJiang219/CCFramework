@@ -101,6 +101,16 @@ export class CCMUIManager {
     }
 
     /**
+     * 合并传入的UI配置对象到现有配置中。
+     * 注意：此方式为浅拷贝（使用展开操作符），如果conf中的uiId重复，会直接覆盖原有数据。
+     * 如果conf对象和原有的 _uiConf 都是普通对象，并且没有原型链、getter/setter或嵌套对象等特殊情况，那么此操作会得到正确的结果。
+     * 但如果涉及到深层嵌套等情况，展开操作符进行的是浅合并，嵌套对象会被引用赋值，需根据实际需求决定是否需要深拷贝。
+     */
+    public mergeUIConf(conf: { [key: number]: CCMUIConf }): void {
+        this._uiConf = { ...this._uiConf, ...conf };
+    }
+
+    /**
      * 设置或覆盖某uiId的配置
      * @param uiId 要设置的界面id
      * @param conf 要设置的配置
@@ -118,7 +128,7 @@ export class CCMUIManager {
         if (parentNode) node.parent = parentNode; // 注意：3.8中不赋值父节点添加widget会报错
         let cvs = find("Canvas");
         let cvs_transform = cvs.getComponent(UITransform);
-        let node_transform = cvs.getComponent(UITransform);
+        let node_transform = node.addComponent(UITransform);
         node_transform.setContentSize(cvs_transform.width, cvs_transform.height);
 
         let widget = node.addComponent(Widget);
@@ -251,9 +261,10 @@ export class CCMUIManager {
             completeCallback(null);
             return;
         }
+        let bundleName = this._uiConf[uiId].bundleName || "resources";
 
         const resLoader = CCMResLoader.getInstance();
-        resLoader.load(uiPath, progressCallback, (err: Error, prefab: Prefab) => {
+        resLoader.load(bundleName, uiPath, progressCallback, (err: Error, prefab: Prefab) => {
             // 检查加载资源错误
             if (err) {
                 CCMLogger.getInstance().log(`getOrCreateUI loadRes ${uiId} faile, path: ${uiPath} error: ${err}`);
@@ -301,12 +312,15 @@ export class CCMUIManager {
         uiView.node.active = true;
         uiView.node.setSiblingIndex(uiInfo.zOrder);
 
+        // 添加到场景中
+        uiView.node.parent = CCMLayerManager.getInstance().getLayer(uiInfo.layerId);
+
         // 快速关闭界面的设置，绑定界面中的background，实现快速关闭
         if (uiView.quickClose) {
             let backGround = uiView.node.getChildByName('background');
             if (!backGround) {
                 backGround = this.createFullScreenNode('background', uiView.node);
-                backGround.setSiblingIndex(-1);
+                backGround.setSiblingIndex(0);
             }
             backGround.targetOff(backGround);
             backGround.on(Node.EventType.TOUCH_END, (event: EventTouch) => {
@@ -314,9 +328,6 @@ export class CCMUIManager {
                 this.close(uiView);
             }, backGround);
         }
-
-        // 添加到场景中
-        uiView.node.parent = CCMLayerManager.getInstance().getLayer(uiInfo.layerId);
 
         // 刷新其他UI
         this.updateUI();

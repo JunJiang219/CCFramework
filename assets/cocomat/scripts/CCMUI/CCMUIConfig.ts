@@ -14,7 +14,7 @@ enum CCMUIID {
 
 // 界面配置
 const CCMUIConfig: { [uiId: number]: CCMUIConf } = {
-    [CCMUIID.TEST1]: { prefabPath: "prefab/test/UITest1", layerId: CCMLayerID.POPUP, preventTouch: true },
-    [CCMUIID.TEST2]: { prefabPath: "prefab/test/UITest2", layerId: CCMLayerID.POPUP, preventTouch: true },
-    [CCMUIID.TEST3]: { prefabPath: "prefab/test/UITest3", layerId: CCMLayerID.POPUP, preventTouch: true },
+    [CCMUIID.TEST1]: { prefabPath: "prefabs/test/UITest1", layerId: CCMLayerID.POPUP, preventTouch: true },
+    [CCMUIID.TEST2]: { prefabPath: "prefabs/test/UITest2", layerId: CCMLayerID.POPUP, preventTouch: true },
+    [CCMUIID.TEST3]: { prefabPath: "prefabs/test/UITest3", layerId: CCMLayerID.POPUP, preventTouch: true },
 }
