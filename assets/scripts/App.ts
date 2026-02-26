@@ -1,4 +1,4 @@
-import { _decorator, AssetManager, assetManager, Component, director, find, instantiate, Node, Prefab, resources } from 'cc';
+import { _decorator, AssetManager, assetManager, Component, director, instantiate, Prefab } from 'cc';
 const { ccclass, property } = _decorator;
 
 @ccclass('App')

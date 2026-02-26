@@ -36,6 +36,7 @@ export default class CCMAdapter {
     private _originalDR_smallNum: number = 0;    // 原始的设计分辨率中较小值
     private _currentDR: Size = null;         // 当前的设计分辨率
     public get currentDR(): Size { return this._currentDR; }
+    public get isLandscape(): boolean { return this._currentDR && this._currentDR.width > this._currentDR.height; }
     private _deviceOrientation: CCMDeviceOrientation = CCMDeviceOrientation.LANDSCAPE;  // 设备方向
     public get deviceOrientation(): CCMDeviceOrientation { return this._deviceOrientation; }
     public set deviceOrientation(value: CCMDeviceOrientation) { this._deviceOrientation = value; }

@@ -1,7 +1,12 @@
-import { _decorator, Component, Node, screen, view } from 'cc';
+import { _decorator, Component, view } from 'cc';
 import CCMLogger from '../../cocomat/scripts/CCMLog/CCMLogger';
-import CCMLayerManager, { CCMLayerID } from '../../cocomat/scripts/CCMLayer/CCMLayerManager';
+import CCMAdapter, { CCMDeviceOrientation } from '../../cocomat/scripts/CCMAdapter/CCMAdapter';
+import { CCMEventManager } from '../../cocomat/scripts/CCMEvent/CCMEventManager';
+import { CCMEvent } from '../../cocomat/scripts/CCMEvent/CCMEvent';
+import { CCMResManager } from '../../cocomat/scripts/CCMRes/CCMResManager';
 const { ccclass, property } = _decorator;
+
+const EVENT_CANVAS_RESIZE = "canvas-resize";
 
 @ccclass('AppManager')
 export class AppManager extends Component {
@@ -9,13 +14,38 @@ export class AppManager extends Component {
         this.appInit();
     }
 
-    update(deltaTime: number) {
+    protected onDestroy(): void {
+        this.unRegisterEvent();
+    }
 
+    update(deltaTime: number) {
+        CCMResManager.getInstance().update(deltaTime);
     }
 
     appInit() {
         CCMLogger.getInstance().log("AppManager appInit");
-        CCMLayerManager.getInstance().getLayer(CCMLayerID.GAME);
+        CCMAdapter.getInstance().deviceOrientation = CCMDeviceOrientation.AUTO;
+        this.registerEvent();
+        CCMAdapter.getInstance().resize();  // 第一次适配，主动调用
+    }
+
+    private registerEvent() {
+        view.on(EVENT_CANVAS_RESIZE, this.onResize, this);
+        CCMEventManager.getInstance().addEventListener(CCMEvent.ORIENTATION_CHANGE, this.onOrientationChange, this);
+    }
+
+    private unRegisterEvent() {
+        view.off(EVENT_CANVAS_RESIZE, this.onResize, this);
+        CCMEventManager.getInstance().removeEventListener(CCMEvent.ORIENTATION_CHANGE, this.onOrientationChange, this);
+    }
+
+    private onResize() {
+        CCMLogger.getInstance().log("AppManager onResize");
+        CCMAdapter.getInstance().resize();
+    }
+
+    private onOrientationChange(eventName: string, isLandscape: boolean) {
+        CCMLogger.getInstance().log("AppManager onOrientationChange", isLandscape);
     }
 }
 

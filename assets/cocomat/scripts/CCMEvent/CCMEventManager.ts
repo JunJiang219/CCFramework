@@ -4,10 +4,10 @@
 
 import CCMLogger from "../CCMLog/CCMLogger";
 
-export type CCMEventManagerCallFunc = (eventName: string, eventData: any) => void;
+export type CCMEventCallFunc = (eventName: string, eventData: any) => void;
 
 interface CCMCallBackTarget {
-    callBack: CCMEventManagerCallFunc,
+    callBack: CCMEventCallFunc,
     target: any,
     priority: number,   // 数值越大，优先级越高
 }
@@ -29,7 +29,7 @@ export class CCMEventManager {
 
     private _eventListeners: { [key: string]: CCMCallBackTarget[] } = {};
 
-    private getEventListenersIndex(eventName: string, callBack: CCMEventManagerCallFunc, target?: any): number {
+    private getEventListenersIndex(eventName: string, callBack: CCMEventCallFunc, target?: any): number {
         let index = -1;
         for (let i = 0, len = this._eventListeners[eventName].length; i < len; i++) {
             let iterator = this._eventListeners[eventName][i];
@@ -41,7 +41,7 @@ export class CCMEventManager {
         return index;
     }
 
-    public addEventListener(eventName: string, callBack: CCMEventManagerCallFunc, target?: any, priority: number = 0): boolean {
+    public addEventListener(eventName: string, callBack: CCMEventCallFunc, target?: any, priority: number = 0): boolean {
         if (!eventName) {
             CCMLogger.getInstance().log("eventName is empty" + eventName);
             return false;
@@ -65,7 +65,7 @@ export class CCMEventManager {
         return true;
     }
 
-    public setEventListener(eventName: string, callBack: CCMEventManagerCallFunc, target?: any, priority: number = 0): boolean {
+    public setEventListener(eventName: string, callBack: CCMEventCallFunc, target?: any, priority: number = 0): boolean {
         if (!eventName) {
             CCMLogger.getInstance().log("eventName is empty" + eventName);
             return false;
@@ -80,7 +80,7 @@ export class CCMEventManager {
         return true;
     }
 
-    public removeEventListener(eventName: string, callBack: CCMEventManagerCallFunc, target?: any) {
+    public removeEventListener(eventName: string, callBack: CCMEventCallFunc, target?: any) {
         if (null != this._eventListeners[eventName]) {
             let index = this.getEventListenersIndex(eventName, callBack, target);
             if (-1 != index) {
