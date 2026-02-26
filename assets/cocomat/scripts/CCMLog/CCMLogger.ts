@@ -28,12 +28,6 @@ export default class CCMLogger {
     public static getInstance(): CCMLogger {
         if (CCMLogger._instance == null) {
             CCMLogger._instance = new CCMLogger();
-
-            if (DEBUG) {
-                CCMLogger._instance._logLevel = CCMLogLevel.TRACE;
-            } else {
-                CCMLogger._instance._logLevel = CCMLogLevel.WARN;
-            }
         }
         return CCMLogger._instance;
     }

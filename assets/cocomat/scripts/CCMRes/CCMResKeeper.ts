@@ -1,6 +1,6 @@
-
 import { _decorator, Asset, CCInteger, Component } from "cc";
-import { AssetType, CCMLoadResArgs, CCMResUtil, CompleteCallback, IRemoteOptions, ProgressCallback } from "./CCMResUtil";
+import { AssetType, CCMLoadResArgs, CompleteCallback, IRemoteOptions, ProgressCallback } from "./CCMResTypes";
+import { CCMResArgsBuilder } from "./CCMResArgsBuilder";
 import CCMResLoader from "./CCMResLoader";
 import { CCMResManager } from "./CCMResManager";
 
@@ -37,7 +37,7 @@ export class CCMResKeeper extends Component {
     public load<T extends Asset>(paths: string | string[], onComplete?: CompleteCallback<T> | null): void;
     public load<T extends Asset>(paths: string | string[], type: AssetType<T> | null, onComplete?: CompleteCallback<T> | null): void;
     public load<T extends Asset>() {
-        let args: CCMLoadResArgs<T> | null = CCMResUtil.makeLoadResArgs.apply(this, arguments);
+        let args: CCMLoadResArgs<T> | null = CCMResArgsBuilder.makeLoadResArgs.apply(this, arguments);
         if (!args) return;
 
         args.keeper = this;
@@ -61,7 +61,7 @@ export class CCMResKeeper extends Component {
     public loadDir<T extends Asset>(dir: string, onComplete?: CompleteCallback<T[]> | null): void;
     public loadDir<T extends Asset>(dir: string, type: AssetType<T> | null, onComplete?: CompleteCallback<T[]> | null): void;
     public loadDir<T extends Asset>() {
-        let args: CCMLoadResArgs<T> | null = CCMResUtil.makeLoadDirArgs.apply(this, arguments);
+        let args: CCMLoadResArgs<T> | null = CCMResArgsBuilder.makeLoadDirArgs.apply(this, arguments);
         if (!args) return;
 
         args.keeper = this;
@@ -78,7 +78,7 @@ export class CCMResKeeper extends Component {
     public loadRemote<T extends Asset>(url: string, onComplete?: CompleteCallback<T> | null): void;
     public loadRemote<T extends Asset>(url: string, options: IRemoteOptions | CompleteCallback<T> | null, onComplete?: CompleteCallback<T> | null): void;
     public loadRemote<T extends Asset>() {
-        let args: CCMLoadResArgs<T> | null = CCMResUtil.makeLoadRemoteArgs.apply(this, arguments);
+        let args: CCMLoadResArgs<T> | null = CCMResArgsBuilder.makeLoadRemoteArgs.apply(this, arguments);
         if (!args) return;
 
         args.keeper = this;

@@ -1,5 +1,5 @@
 import { _decorator, Component, view } from 'cc';
-import CCMLogger from '../../cocomat/scripts/CCMLog/CCMLogger';
+import CCMLogger, { CCMLogLevel } from '../../cocomat/scripts/CCMLog/CCMLogger';
 import CCMAdapter, { CCMDeviceOrientation } from '../../cocomat/scripts/CCMAdapter/CCMAdapter';
 import { CCMEventManager } from '../../cocomat/scripts/CCMEvent/CCMEventManager';
 import { CCMEvent } from '../../cocomat/scripts/CCMEvent/CCMEvent';
@@ -23,6 +23,9 @@ export class AppManager extends Component {
     }
 
     appInit() {
+        // 正式游戏根据环境修改日志等级
+        CCMLogger.getInstance().setLogLevel(CCMLogLevel.TRACE);
+
         CCMLogger.getInstance().log("AppManager appInit");
         CCMAdapter.getInstance().deviceOrientation = CCMDeviceOrientation.AUTO;
         this.registerEvent();
