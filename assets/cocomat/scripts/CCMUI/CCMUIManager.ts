@@ -315,6 +315,10 @@ export class CCMUIManager {
         // 添加到场景中
         uiView.node.parent = CCMLayerManager.getInstance().getLayer(uiInfo.layerId);
 
+        // 更新Widget的对齐
+        let widget = uiView.getComponent(Widget);
+        if (widget) widget.updateAlignment();
+
         // 快速关闭界面的设置，绑定界面中的background，实现快速关闭
         if (uiView.quickClose) {
             let backGround = uiView.node.getChildByName('background');

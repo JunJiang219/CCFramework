@@ -6,7 +6,7 @@ import { CCMEvent } from '../../cocomat/scripts/CCMEvent/CCMEvent';
 import { CCMResManager } from '../../cocomat/scripts/CCMRes/CCMResManager';
 import { DEBUG } from 'cc/env';
 import { CCMUIManager } from '../../cocomat/scripts/CCMUI/CCMUIManager';
-import { UIConfig } from './UIConfig';
+import { UIConfig, UIID } from './UIConfig';
 const { ccclass, property } = _decorator;
 
 const EVENT_CANVAS_RESIZE = "canvas-resize";
@@ -40,6 +40,9 @@ export class AppManager extends Component {
             // 测试用
             window['uiMgr'] = CCMUIManager.getInstance();
         }
+
+        CCMUIManager.getInstance().open(UIID.TEST1);
+        CCMUIManager.getInstance().open(UIID.TEST2);
     }
 
     private registerEvent() {

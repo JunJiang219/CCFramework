@@ -2,12 +2,12 @@
   "ver": "1.1.50",
   "importer": "prefab",
   "imported": true,
-  "uuid": "5b630f3f-e5e0-41bb-8975-02239d3ca6c8",
+  "uuid": "05ec80d6-f2ef-4390-b3d6-c8162642e6f1",
   "files": [
     ".json"
   ],
   "subMetas": {},
   "userData": {
-    "syncNodeName": "UITest1"
+    "syncNodeName": "UITest2"
   }
 }
