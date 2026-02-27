@@ -15,7 +15,7 @@ export class UITest1 extends CCMUIView {
             let node = new Node();
             node.parent = this.node;
             node.setPosition(0, 0);
-            node.setSiblingIndex(0);
+            node.setSiblingIndex(1);
             let transform = node.addComponent(UITransform);
             let sprite = node.addComponent(Sprite);
             sprite.spriteFrame = asset;

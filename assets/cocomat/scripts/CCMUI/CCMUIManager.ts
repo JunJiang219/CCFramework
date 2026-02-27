@@ -155,7 +155,7 @@ export class CCMUIManager {
         let node = this.createFullScreenNode(`preventTouch_${layerId}_${zOrder}`, parentNode);
         node.setSiblingIndex(zOrder);
 
-        node.on(Node.EventType.TOUCH_END, function (event: EventTouch) {
+        node.on(Node.EventType.TOUCH_START, function (event: EventTouch) {
             event.propagationStopped = true;
         }, node);
 
